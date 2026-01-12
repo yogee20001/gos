@@ -78,6 +78,35 @@ function unlock() {
     document.getElementById("error").innerText = "Incorrect PIN";
   }
 }
+
+const pageUrl = window.location.href;
+
+const qr = new QRCodeStyling({
+  width: 120,
+  height: 120,
+  data: pageUrl,
+  qrOptions: {
+    errorCorrectionLevel: "H"
+  },
+  dotsOptions: {
+    type: "classy-rounded",
+    color: "#d6336c"
+  },
+  backgroundOptions: {
+    color: "#ffffff"
+  },
+  cornersSquareOptions: {
+    type: "extra-rounded",
+    color: "#b02350"
+  },
+  cornersDotOptions: {
+    type: "dot",
+    color: "#b02350"
+  }
+});
+
+qr.append(document.getElementById("qr-container"));
+
 </script>
 
 </body>
