@@ -73,7 +73,7 @@ const userId = params.get("id");
 
 if (!userId) {
   document.body.innerHTML = "<h3>Invalid or incomplete link</h3>";
-  throw new Error("Missing user id");
+  return;
 }
 
 let currentUser = null;
