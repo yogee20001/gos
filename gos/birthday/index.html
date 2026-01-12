@@ -1,118 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Birthday Surprise</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     body {
-      font-family: Georgia, serif;
-      background: #f7f3ee;
+      margin: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: #f7f3ee;
+      font-family: Georgia, serif;
     }
+
     .box {
-      background: white;
+      background: #ffffff;
       padding: 30px;
-      max-width: 400px;
       width: 90%;
+      max-width: 380px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,.15);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
     }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
     input {
-      padding: 10px;
       width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
       margin-top: 15px;
       font-size: 16px;
-    }
-    button {
-      margin-top: 15px;
-      padding: 10px;
-      width: 100%;
       background: #b36b1c;
       color: white;
       border: none;
       cursor: pointer;
     }
+
     .error {
-      color: red;
       margin-top: 10px;
+      color: #c0392b;
+      font-size: 14px;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>
-
 </head>
 <body>
 
-<div class="box">
+<div class="box" id="loader">
   <h2>Enter PIN to Unlock</h2>
-  <input type="password" id="pin" placeholder="Enter PIN">
+  <input type="password" id="pinInput" placeholder="Enter PIN" />
   <button onclick="unlock()">Unlock</button>
   <div class="error" id="error"></div>
 </div>
 
 <script>
+/* ===============================
+   READ USER ID FROM URL
+================================ */
+
 const params = new URLSearchParams(window.location.search);
 const userId = params.get("id");
 
 if (!userId) {
-  document.body.innerHTML = "<h3>Invalid link</h3>";
+  document.body.innerHTML = "<h3>Invalid or incomplete link</h3>";
+  throw new Error("Missing user id");
 }
 
-let userData = null;
+let currentUser = null;
+
+/* ===============================
+   LOAD USER DATA
+================================ */
 
 fetch("users.json")
   .then(res => res.json())
-  .then(data => {
-    userData = data.find(u => u.id === userId);
-    if (!userData || userData.status !== "active") {
-      document.body.innerHTML = "<h3>This page is not available</h3>";
+  .then(users => {
+    currentUser = users.find(u => u.id === userId);
+
+    if (!currentUser || currentUser.status !== "active") {
+      document.body.innerHTML = "<h3>This page is no longer available</h3>";
     }
+  })
+  .catch(() => {
+    document.body.innerHTML = "<h3>Error loading page</h3>";
   });
 
+/* ===============================
+   PIN VALIDATION
+================================ */
+
 function unlock() {
-  const enteredPin = document.getElementById("pin").value;
-  if (enteredPin === userData.pin) {
-    window.location.href = `designs/${userData.design}/index.html?id=${userId}`;
+  const enteredPin = document.getElementById("pinInput").value;
+  const errorBox = document.getElementById("error");
+
+  if (!currentUser) {
+    errorBox.innerText = "Please wait...";
+    return;
+  }
+
+  if (enteredPin === currentUser.pin) {
+    window.location.href =
+      `designs/${currentUser.design}/index.html?id=${currentUser.id}`;
   } else {
-    document.getElementById("error").innerText = "Incorrect PIN";
+    errorBox.innerText = "Incorrect PIN. Please try again.";
   }
 }
-
-const pageUrl = window.location.href;
-
-const qr = new QRCodeStyling({
-  width: 120,
-  height: 120,
-  data: pageUrl,
-  qrOptions: {
-    errorCorrectionLevel: "H"
-  },
-  dotsOptions: {
-    type: "classy-rounded",
-    color: "#d6336c"
-  },
-  backgroundOptions: {
-    color: "#ffffff"
-  },
-  cornersSquareOptions: {
-    type: "extra-rounded",
-    color: "#b02350"
-  },
-  cornersDotOptions: {
-    type: "dot",
-    color: "#b02350"
-  }
-});
-
-qr.append(document.getElementById("qr-container"));
-
 </script>
-
-<div id="qr-container"></div>
-
 
 </body>
 </html>
