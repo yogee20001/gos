@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  font-family: Georgia, serif;
+  background: #ffffff;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.text {
+  padding: 60px;
+}
+
+h4 {
+  letter-spacing: 4px;
+  font-size: 18px;
+}
+
+h1 {
+  font-size: 80px;
+  color: #b36b1c;
+  margin: 10px 0 30px;
+}
+
+.message {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.to {
+  font-size: 22px;
+}
+
+.from {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #555;
+}
+
+.image {
+  background: url("../../assets/flowers.webp") center/cover no-repeat;
+}
+
+/* Embedded QR */
+#qr-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.15);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 56px;
+  }
+
+  .text {
+    padding: 40px;
+  }
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Birthday</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Floral Design CSS -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- QR Code Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>
+</head>
+<body>
+
+  <div class="card">
+    <div class="text">
+      <h4>HAPPY</h4>
+      <h1>Birthday</h1>
+
+      <p class="message" id="message"></p>
+
+      <p class="to">Dear <span id="to"></span>,</p>
+      <p class="from">— <span id="from"></span></p>
+    </div>
+
+    <div class="image"></div>
+  </div>
+
+  <!-- Embedded QR -->
+  <div id="qr-container"></div>
+
+<script>
+/* ===============================
+   LOAD USER DATA
+================================ */
+
+const params = new URLSearchParams(window.location.search);
+const userId = params.get("id");
+
+if (!userId) {
+  document.body.innerHTML = "<h3>Invalid link</h3>";
+}
+
+fetch("../../users.json")
+  .then(response => response.json())
+  .then(users => {
+    const user = users.find(u => u.id === userId);
+
+    if (!user || user.status !== "active") {
+      document.body.innerHTML = "<h3>This page is not available</h3>";
+      return;
+    }
+
+    document.getElementById("to").innerText = user.to;
+    document.getElementById("from").innerText = user.from;
+    document.getElementById("message").innerText = user.message || "";
+  });
+
+/* ===============================
+   EMBED HEART STYLE QR
+================================ */
+
+const pageUrl = window.location.href;
+
+const qr = new QRCodeStyling({
+  width: 120,
+  height: 120,
+  data: pageUrl,
+  qrOptions: {
+    errorCorrectionLevel: "H"
+  },
+  dotsOptions: {
+    type: "classy-rounded",
+    color: "#d6336c"
+  },
+  backgroundOptions: {
+    color: "#ffffff"
+  },
+  cornersSquareOptions: {
+    type: "extra-rounded",
+    color: "#b02350"
+  },
+  cornersDotOptions: {
+    type: "dot",
+    color: "#b02350"
+  }
+});
+
+qr.append(document.getElementById("qr-container"));
+</script>
+
+</body>
+</html>
