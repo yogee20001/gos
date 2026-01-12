@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===== FULL BACKGROUND ===== */
+body {
+  min-height: 100vh;
+  background:
+    linear-gradient(
+      rgba(0,0,0,0.55),
+      rgba(0,0,0,0.55)
+    ),
+    url("bg.jpg") center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+/* ===== MAIN CARD ===== */
+.card {
+  width: 90%;
+  max-width: 360px;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+  border-radius: 22px;
+  padding: 28px 22px 34px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  animation: fadeUp 1.2s ease forwards;
+}
+
+/* ===== USER PHOTO ===== */
+.photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 18px;
+  border: 4px solid rgba(255,255,255,0.8);
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== TEXT ===== */
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffd23f;
+  margin-bottom: 14px;
+}
+
+.message {
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* ===== SUBTLE ARROW LINE ===== */
+.arrow {
+  width: 120px;
+  height: 3px;
+  margin: 22px auto 0;
+  background: linear-gradient(to right, transparent, #fff, transparent);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%,100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ===== TABLET / DESKTOP ===== */
+@media (min-width: 768px) {
+  .card { max-width: 420px; }
+  .title { font-size: 34px; }
+  .name { font-size: 26px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="photo">
+    <img src="user.jpg" alt="User Photo">
+  </div>
+
+  <div class="title">Happy Birthday</div>
+
+  <!-- 🔁 CHANGE NAME ONLY -->
+  <div class="name">Champion</div>
+
+  <div class="message">
+    May your focus stay sharp, your aim stay true,
+    and every arrow of life hit the perfect mark.
+  </div>
+
+  <div class="arrow"></div>
+
+</div>
+
+</body>
+</html>ss
