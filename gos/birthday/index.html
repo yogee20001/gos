@@ -15,92 +15,88 @@
       background: #f7f3ee;
       font-family: Georgia, serif;
     }
-
     .box {
-      background: #ffffff;
+      background: white;
       padding: 30px;
-      width: 90%;
       max-width: 380px;
+      width: 90%;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      box-shadow: 0 20px 40px rgba(0,0,0,.15);
     }
-
-    h2 {
-      margin-bottom: 10px;
-    }
-
     input {
       width: 100%;
       padding: 12px;
-      font-size: 16px;
       margin-top: 15px;
+      font-size: 16px;
     }
-
     button {
       width: 100%;
       padding: 12px;
       margin-top: 15px;
-      font-size: 16px;
       background: #b36b1c;
       color: white;
       border: none;
       cursor: pointer;
     }
-
     .error {
+      color: red;
       margin-top: 10px;
-      color: #c0392b;
-      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
-<div class="box" id="loader">
+<div class="box" id="app">
   <h2>Enter PIN to Unlock</h2>
-  <input type="password" id="pinInput" placeholder="Enter PIN" />
-  <button onclick="unlock()">Unlock</button>
+  <input type="password" id="pinInput" placeholder="Enter PIN">
+  <button id="unlockBtn">Unlock</button>
   <div class="error" id="error"></div>
 </div>
 
 <script>
 /* ===============================
-   READ USER ID FROM URL
+   GLOBAL STATE
 ================================ */
+let currentUser = null;
 
+/* ===============================
+   READ USER ID
+================================ */
 const params = new URLSearchParams(window.location.search);
 const userId = params.get("id");
 
 if (!userId) {
-  document.body.innerHTML = "<h3>Invalid or incomplete link</h3>";
-  return;
+  document.getElementById("app").innerHTML =
+    "<h3>Invalid or incomplete link</h3>";
+} else {
+  loadUser();
 }
-
-let currentUser = null;
 
 /* ===============================
    LOAD USER DATA
 ================================ */
+function loadUser() {
+  fetch("users.json")
+    .then(res => res.json())
+    .then(users => {
+      currentUser = users.find(u => u.id === userId);
 
-fetch("users.json")
-  .then(res => res.json())
-  .then(users => {
-    currentUser = users.find(u => u.id === userId);
-
-    if (!currentUser || currentUser.status !== "active") {
-      document.body.innerHTML = "<h3>This page is no longer available</h3>";
-    }
-  })
-  .catch(() => {
-    document.body.innerHTML = "<h3>Error loading page</h3>";
-  });
+      if (!currentUser || currentUser.status !== "active") {
+        document.getElementById("app").innerHTML =
+          "<h3>This page is not available</h3>";
+      }
+    })
+    .catch(() => {
+      document.getElementById("app").innerHTML =
+        "<h3>Error loading data</h3>";
+    });
+}
 
 /* ===============================
-   PIN VALIDATION
+   UNLOCK HANDLER
 ================================ */
-
 function unlock() {
-  const enteredPin = document.getElementById("pinInput").value;
+  const pinInput = document.getElementById("pinInput").value;
   const errorBox = document.getElementById("error");
 
   if (!currentUser) {
@@ -108,13 +104,20 @@ function unlock() {
     return;
   }
 
-  if (enteredPin === currentUser.pin) {
+  if (pinInput === currentUser.pin) {
     window.location.href =
       `designs/${currentUser.design}/index.html?id=${currentUser.id}`;
   } else {
-    errorBox.innerText = "Incorrect PIN. Please try again.";
+    errorBox.innerText = "Incorrect PIN";
   }
 }
+
+/* ===============================
+   BUTTON EVENT
+================================ */
+document
+  .getElementById("unlockBtn")
+  .addEventListener("click", unlock);
 </script>
 
 </body>
