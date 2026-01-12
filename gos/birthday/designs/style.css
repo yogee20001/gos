@@ -26,3 +26,13 @@ h1 {
 .image {
   background: url("../../assets/flowers.webp") center/cover no-repeat;
 }
+
+  #qr-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.15);
+}
