@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  background: #fff;
+  font-family: Georgia, serif;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.text {
+  padding: 60px;
+}
+
+h4 {
+  letter-spacing: 4px;
+}
+
+h1 {
+  font-size: 80px;
+  color: #b36b1c;
+}
+
+.image {
+  background: url("../../assets/flowers.webp") center/cover no-repeat;
+}

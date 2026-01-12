@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Birthday Surprise</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background: #f7f3ee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,.15);
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      margin-top: 15px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: #b36b1c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Enter PIN to Unlock</h2>
+  <input type="password" id="pin" placeholder="Enter PIN">
+  <button onclick="unlock()">Unlock</button>
+  <div class="error" id="error"></div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const userId = params.get("id");
+
+if (!userId) {
+  document.body.innerHTML = "<h3>Invalid link</h3>";
+}
+
+let userData = null;
+
+fetch("users.json")
+  .then(res => res.json())
+  .then(data => {
+    userData = data.find(u => u.id === userId);
+    if (!userData || userData.status !== "active") {
+      document.body.innerHTML = "<h3>This page is not available</h3>";
+    }
+  });
+
+function unlock() {
+  const enteredPin = document.getElementById("pin").value;
+  if (enteredPin === userData.pin) {
+    window.location.href = `designs/${userData.design}/index.html?id=${userId}`;
+  } else {
+    document.getElementById("error").innerText = "Incorrect PIN";
+  }
+}
+</script>
+
+</body>
+</html>

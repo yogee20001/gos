@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- MUST be loaded BEFORE usage -->
+  <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f3ee;
+      padding: 30px;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      max-width: 500px;
+      padding: 12px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 20px;
+      font-size: 16px;
+      background: #d6336c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #qr {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>❤️ Heart Style QR Generator</h2>
+
+<input id="link" placeholder="Paste greeting link here">
+
+<br>
+<button onclick="generateQR()">Generate QR</button>
+<button onclick="downloadQR()">Download PNG</button>
+
+<div id="qr"></div>
+
+<script>
+const qrContainer = document.getElementById("qr");
+
+const qrCode = new QRCodeStyling({
+  width: 300,
+  height: 300,
+  data: "https://example.com",
+  margin: 10,
+  qrOptions: {
+    errorCorrectionLevel: "H"
+  },
+  dotsOptions: {
+    type: "classy-rounded",
+    color: "#d6336c"
+  },
+  backgroundOptions: {
+    color: "#ffffff"
+  },
+  cornersSquareOptions: {
+    type: "extra-rounded",
+    color: "#b02350"
+  },
+  cornersDotOptions: {
+    type: "dot",
+    color: "#b02350"
+  }
+});
+
+qrCode.append(qrContainer);
+
+function generateQR() {
+  const link = document.getElementById("link").value.trim();
+  if (!link) {
+    alert("Paste a link first");
+    return;
+  }
+  qrCode.update({ data: link });
+}
+
+function downloadQR() {
+  qrCode.download({ name: "heart-qr", extension: "png" });
+}
+</script>
+
+</body>
+</html>
